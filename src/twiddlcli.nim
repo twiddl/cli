@@ -9,6 +9,10 @@ proc listJobs(env:TwiddlEnv) =
   for job in env.twiddlfile.jobs.values:
     echo job.name
 
+proc listBuilds(env:TwiddlEnv) =
+  for build in env.builds:
+    echo build.id
+
 proc buildSummary(build:Build) =
   echo "Build summary for build " & $build.id
 
@@ -27,6 +31,10 @@ when isMainModule:
       run:
         let env = openTwiddlEnv(opts.parentOpts.path)
         listJobs(env)
+    command("list-builds"):
+      run:
+        let env = openTwiddlEnv(opts.parentOpts.path)
+        listBuilds(env)
     command("show"):
       arg("id")
       run:
