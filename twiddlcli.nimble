@@ -12,4 +12,5 @@ bin           = @["twiddlcli"]
 # Dependencies
 
 requires "nim >= 0.20.0"
+requires "argparse >= 0.7.1"
 requires "https://github.com/twiddl/twiddl#master"
