@@ -1,0 +1,10 @@
+{
+	"name":"twiddlcli",
+	"jobs": {
+		"build": {
+			"runner": "unsupervised",
+			"commands": ["nimble build"],
+			"artifacts": ["twiddlcli"],
+		},
+	},
+}
