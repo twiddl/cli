@@ -1,4 +1,4 @@
-import os, tables
+import os, tables, terminal, terminaltables
 
 import argparse
 
@@ -10,11 +10,26 @@ proc listJobs(env:TwiddlEnv) =
     echo job.name
 
 proc listBuilds(env:TwiddlEnv) =
+  var t = newTerminalTable()
+  t.tableWidth = 0
+  t.setHeaders(@["ID", "Status"])
   for build in env.builds:
-    echo build.id
+    t.addRow(@[$build.id,
+               build.status.statusHumanReadable()])
+  printTable(t)
 
-proc buildSummary(build:Build) =
-  echo "Build summary for build " & $build.id
+proc statusColor(status:BuildStatus): ForegroundColor =
+  case status
+  of bsFinishedSuccessful: fgGreen
+  of bsFinishedFailed: fgRed
+  of bsRunning: fgCyan
+  else: fgDefault
+
+proc buildSummary(env:TwiddlEnv, buildID:string) =
+  let b = env.builds[buildID.parseInt]
+  echo "--- Build summary for build " & $b.id & " ---"
+  styledEcho("Status: ", b.status.statusColor, $b.status)
+  echo "Job name: " & b.job.name
 
 proc build(env:TwiddlEnv, job:string) =
   if not env.twiddlfile.jobs.hasKey(job):
@@ -39,10 +54,16 @@ when isMainModule:
       arg("id")
       run:
         let env = openTwiddlEnv(opts.parentOpts.path)
+        buildSummary(env, opts.id)
     command("build"):
       arg("job")
       run:
         let env = openTwiddlEnv(opts.parentOpts.path)
         build(env, opts.job)
+    command("log"):
+      arg("build")
+      arg("id")
+      run:
+        let env = openTwiddlEnv(opts.parentOpts.path)
 
   p.run()

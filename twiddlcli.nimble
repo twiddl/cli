@@ -13,4 +13,5 @@ bin           = @["twiddlcli"]
 
 requires "nim >= 0.20.0"
 requires "argparse >= 0.7.1"
+requires "terminaltables"
 requires "https://github.com/twiddl/twiddl#master"
