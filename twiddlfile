@@ -6,5 +6,10 @@
 			"commands": ["nimble build"],
 			"artifacts": ["twiddlcli"],
 		},
+		"lxc": {
+			"runner": "lxc",
+			"commands": ["nimble build"],
+			"artifacts": ["twiddlcli"],
+		},
 	},
 }
